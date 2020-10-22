@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: myoung34/github-runner:latest
+  repository: myoung34/github-runner
   tag: latest
   pullPolicy: IfNotPresent
 
