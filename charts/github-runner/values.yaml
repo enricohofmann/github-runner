@@ -23,7 +23,7 @@ gitHubRunner:
     # GitHub Organization (Team) name
     ORG_NAME: githubOrganization
     # Used Labels
-    LABELS: self-hosted, linux
+    LABELS: "self-hosted, linux"
 
 serviceAccount:
   # Specifies whether a service account should be created
