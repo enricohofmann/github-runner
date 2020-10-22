@@ -2,11 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# To increase the amount of runners, adjust the amount of the replicaCount
 replicaCount: 1
 
 image:
   repository: myoung34/github-runner
-  tag: latest
+  tag: 2.273.5
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -23,7 +24,7 @@ gitHubRunner:
     # GitHub Organization (Team) name
     ORG_NAME: githubOrganization
     # Used Labels
-    LABELS: "self-hosted, linux"
+    LABELS: "self-hosted,linux"
 
 serviceAccount:
   # Specifies whether a service account should be created
