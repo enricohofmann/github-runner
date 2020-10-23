@@ -11,7 +11,7 @@ gitHubRunner:
     # Personal Access Token of a user inside the organization
     ACCESS_TOKEN: ""
   env:
-    # If this is set to true, the runnel will be available for all repositories inside the organization
+    # If this is set to true, the runner will be available for all repositories inside the organization
     ORG_RUNNER: true
     # GitHub Organization (Team) name
     ORG_NAME: githubOrganization
