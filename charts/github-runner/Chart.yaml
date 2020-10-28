@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "2.273.5"
 description: A Helm chart for local GitHub Action runners
 name: github-runner
-version: 0.1.1
+version: 0.2.0
 
 maintainers:
   - name: enricohofmann
