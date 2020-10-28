@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "github-runner.fullname" . }}-dind
+  labels:
+  {{ include "github-runner.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "github-runner.name" . }}-dind
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "github-runner.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ template "github-runner.serviceAccountName" . }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            privileged: true
+            readOnlyRootFilesystem: false
+          stdin: true
+          tty: true
+          image: "{{ .Values.dind.image.repository }}:{{ .Values.dind.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources: {}
+          command:
+            - dockerd
+            - --host=unix:///var/run/docker.sock
+            - --host=tcp://0.0.0.0:2376
+          env:
+            - name: DOCKER_TLS_CERTDIR
+          volumeMounts:
+            - mountPath: /var/lib/docker
+              name: dind-storage
+      volumes:
+        - name: dind-storage
+          persistentVolumeClaim:
+            claimName: {{ include "github-runner.fullname" . }}-dind
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}

@@ -6,15 +6,20 @@
 replicaCount: 1
 
 image:
-  repository: myoung34/github-runner
-  tag: 2.273.5
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+dind:
+  image:
+    repository: docker
+    tag: 19.03.12-dind
 gitHubRunner:
+  image:
+    repository: myoung34/github-runner
+    tag: 2.273.5
   secret:
     # Personal Access Token of a user inside the organization
     ACCESS_TOKEN: ""
