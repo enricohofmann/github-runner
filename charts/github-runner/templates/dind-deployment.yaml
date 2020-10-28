@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "github-runner.fullname" . }}-dind
   labels:
-{{ include "github-runner.labels" . | indent 4 }}
+{{ include "github-runner.dind.labels" . | indent 4 }}
 spec:
   replicas: 1
   selector:

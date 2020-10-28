@@ -45,6 +45,19 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
+Common labels for Docker in Docker
+*/}}
+{{- define "github-runner.dind.labels" -}}
+app.kubernetes.io/name: {{ include "github-runner.name" . }}-dind
+helm.sh/chart: {{ include "github-runner.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "github-runner.serviceAccountName" -}}
