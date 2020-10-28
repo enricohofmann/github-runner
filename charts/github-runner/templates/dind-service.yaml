@@ -9,4 +9,5 @@ spec:
       protocol: TCP
       name: {{ include "github-runner.fullname" . }}-dind
   selector:
-    app: mariadb
+    app.kubernetes.io/name: {{ include "github-runner.name" . }}-dind
+    app.kubernetes.io/instance: {{ .Release.Name }}
