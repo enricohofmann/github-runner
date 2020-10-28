@@ -32,6 +32,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            - name: DOCKER_HOST
+              value: tcp://{{ include "github-runner.fullname" . }}-dind:2376
             {{- range $key, $value := .Values.gitHubRunner.env}}
             - name: {{$key}}
               value: "{{$value}}"
