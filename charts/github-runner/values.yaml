@@ -13,6 +13,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 dind:
+  enabled: true
   image:
     repository: docker
     tag: 19.03.12-dind
