@@ -1,0 +1,15 @@
+{{ if .Values.dind.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "github-runner.fullname" . }}-dind
+spec:
+  ports:
+    - port: 2376
+      targetPort: 2376
+      protocol: TCP
+      name: {{ include "github-runner.fullname" . }}-dind
+  selector:
+    app.kubernetes.io/name: {{ include "github-runner.name" . }}-dind
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

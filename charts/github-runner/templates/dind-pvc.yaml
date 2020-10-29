@@ -1,0 +1,12 @@
+{{ if .Values.dind.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "github-runner.fullname" . }}-dind
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+{{- end }}

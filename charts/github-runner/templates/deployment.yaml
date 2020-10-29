@@ -27,11 +27,15 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.gitHubRunner.image.repository }}:{{ .Values.gitHubRunner.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            {{ if .Values.dind.enabled }}
+            - name: DOCKER_HOST
+              value: tcp://{{ include "github-runner.fullname" . }}-dind:2376
+            {{- end }}
             {{- range $key, $value := .Values.gitHubRunner.env}}
             - name: {{$key}}
               value: "{{$value}}"
@@ -39,6 +43,17 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "github-runner.fullname" . }}
+          {{ if not .Values.dind.enabled }}
+          volumeMounts:
+            - name: dockersock
+              mountPath: /var/run/docker.sock
+          {{- end }}
+      {{ if not .Values.dind.enabled }}
+      volumes:
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
